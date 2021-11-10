@@ -5,11 +5,9 @@ import colors from "../../constants/colors.json";
 import PropTypes from "prop-types";
 
 const EditForm = ({ data, onSubmit }) => {
-    console.log("data:", data);
     const [form, setForm] = useState(data || {});
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(form);
         onSubmit(form);
     };
     const handleChange = (target) => {
