@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import EditForm from "../components/ui/editForm";
 import { useParams } from "react-router-dom";
 import qualityService from "../services/quality.service";
 import { toast } from "react-toastify";
+import QualityForm from "../components/ui/qualityForm";
 
 const EditQualityPage = () => {
     const [quality, setQuality] = useState(null);
@@ -38,7 +38,7 @@ const EditQualityPage = () => {
         <>
             <h1>Edit Quality Page</h1>{" "}
             {quality ? (
-                <EditForm data={quality} onSubmit={handleSubmit} />
+                <QualityForm data={quality} onSubmit={handleSubmit} />
             ) : (
                 <p>loading...</p>
             )}
