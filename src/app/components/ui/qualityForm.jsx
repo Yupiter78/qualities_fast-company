@@ -5,8 +5,8 @@ import colors from "../../constants/colors.json";
 import useForm from "../../hooks/useForm";
 import PropTypes from "prop-types";
 
-const QualityForm = ({ onSubmit }) => {
-    const { form, handleSubmit, handleChange } = useForm({}, onSubmit);
+const QualityForm = ({ data, onSubmit }) => {
+    const { form, handleSubmit, handleChange } = useForm(data, onSubmit);
 
     return (
         <form onSubmit={handleSubmit}>
