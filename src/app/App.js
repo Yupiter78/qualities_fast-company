@@ -4,7 +4,7 @@ import Container from "./components/common/container";
 import NavBar from "./components/ui/NavBar";
 import routes from "./routes";
 import { ToastContainer } from "react-toastify";
-import { QualitiesProvider, useQualities } from "./hooks/useQualities";
+import { QualitiesProvider } from "./hooks/useQualities";
 import "react-toastify/dist/ReactToastify.css";
 
 const getRoutes = (routes) => {
@@ -13,27 +13,17 @@ const getRoutes = (routes) => {
     });
 };
 
-const QualitiesLoading = ({ children }) => {
-    const { isLoading } = useQualities();
-    if (!isLoading) {
-        return children;
-    }
-    return <h1>Qualities loading...</h1>;
-};
-
 function App() {
     return (
         <div className="App">
             <NavBar routes={routes} />
             <QualitiesProvider>
-                <QualitiesLoading>
-                    <Container>
-                        <Switch>
-                            {getRoutes(routes)}
-                            <Redirect to="/" />
-                        </Switch>
-                    </Container>
-                </QualitiesLoading>
+                <Container>
+                    <Switch>
+                        {getRoutes(routes)}
+                        <Redirect to="/" />
+                    </Switch>
+                </Container>
             </QualitiesProvider>
             <ToastContainer />
         </div>

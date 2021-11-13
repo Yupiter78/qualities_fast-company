@@ -26,7 +26,7 @@ export const QualitiesProvider = ({ children }) => {
     }, []);
     return (
         <QualitiesContext.Provider value={{ qualities, isLoading }}>
-            {children}
+            {!isLoading ? children : <h1>Qualities loading...</h1>}
         </QualitiesContext.Provider>
     );
 };
