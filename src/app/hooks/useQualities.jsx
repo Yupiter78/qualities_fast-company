@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import qualityService from "../services/quality.service";
 import { toast } from "react-toastify";
@@ -12,7 +12,6 @@ export const QualitiesProvider = ({ children }) => {
     const [qualities, setQualities] = useState([]);
     const [error, setError] = useState(null);
     const [isLoading, setLoading] = useState(true);
-    const prevState = useRef([]);
     useEffect(() => {
         const getQualities = async () => {
             try {
@@ -20,8 +19,7 @@ export const QualitiesProvider = ({ children }) => {
                 setQualities(content);
                 setLoading(false);
             } catch (error) {
-                const { message } = error.response.data;
-                setError(message);
+                errorCatcher(error);
             }
         };
         getQualities();
@@ -40,8 +38,7 @@ export const QualitiesProvider = ({ children }) => {
             );
             return content;
         } catch (error) {
-            const { message } = error.response.data;
-            setError(message);
+            errorCatcher(error);
         }
     };
 
@@ -51,26 +48,32 @@ export const QualitiesProvider = ({ children }) => {
             setQualities((prevState) => [...prevState, content]);
             return content;
         } catch (error) {
-            const { message } = error.response.data;
-            setError(message);
+            errorCatcher(error);
         }
     };
 
     const deleteQuality = async (id) => {
-        prevState.current = qualities;
-        setQualities((prevState) => {
-            return prevState.filter((item) => item._id !== id);
-        });
         try {
-            await qualityService.delete(id);
+            const { content } = await qualityService.delete(id);
+            setQualities((prevState) => {
+                return prevState.filter((item) => item._id !== content._id);
+            });
         } catch (error) {
-            const { message } = await error.response.data;
-            toast.info("Object not delete");
-            console.log("message:", message);
-            setError(message);
-            setQualities(prevState.current);
+            errorCatcher(error);
         }
     };
+
+    function errorCatcher(error) {
+        const { message } = error.response.data;
+        setError(message);
+    }
+
+    useEffect(() => {
+        if (error) {
+            toast.error(error);
+            setError(null);
+        }
+    }, [error]);
 
     return (
         <QualitiesContext.Provider
